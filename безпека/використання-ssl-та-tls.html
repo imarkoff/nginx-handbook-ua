@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="uk">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Використання SSL та TLS</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🔑</text></svg>">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.0/font/bootstrap-icons.css">
+    <link href="/css/prism.css" rel="stylesheet">
+  </head>
+  <body class="bg-light">
+
+    <header id="navbar"></header>
+    
+    <aside id="sidebar"></aside>    
+
+    <main class="container ms-210">
+      <div class="emoji">🔑</div>
+      <h1>Використання SSL та TLS</h1>
+      <hr>
+      
+      <div class="alert alert-success"><b>SSL</b> <span class="gray">(Secure Sockets Layer)</span> та <b>TLS</b> <span class="gray">(Transport Layer Security)</span>  - протоколи шифрування, які забезпечують захист даних від перехоплення під час передачі через мережу. У веб-серверах вони дозволяють захищати дані, які передаються між браузером користувача та веб-сервером.</div>
+      
+      <p>Налаштування SSL та TLS може допомогти забезпечити високий рівень безпеки вашого веб-сервера. Крім того, захищений зв'язок може позитивно вплинути на репутацію вашого сайту в пошукових системах, оскільки більшість пошукових систем віддає перевагу сайтам зі захищеним зв'язком.</p>
+
+      <p><b><h3>Щоб налаштувати SSL та TLS, необхідно:</h3></b></p>
+      <ol>
+        <li><b>Отримати SSL-сертифікат:</b> Можна використовувати сертифікаційний центр, який надає безкоштовні або платні сертифікати. Один з безкоштовних сертифікатів можна отримати від <a href="https://letsencrypt.org/">Let's Encrypt</a>.</li>
+        <li>
+          <b>Внести зміни у файл конфігурації:</b>
+<pre><code class="lang-nginx">server {
+  listen 443 ssl;
+  server_name example.com;
+
+  # вказують шлях до сертифікату та приватного ключа
+  ssl_certificate /path/to/ssl/certificate;
+  ssl_certificate_key /path/to/ssl/privatekey;
+
+  # Вибір протоколу шифрування
+  ssl_protocols TLSv1.2 TLSv1.3;
+
+  # Вибір шифрування
+  ssl_ciphers HIGH:!aNULL:!MD5;
+  # HIGH - включає сильні шифри, які не мають вразливостей
+  # !aNULL, !MD5 - виключає шифри з ненадійними алгоритмами
+
+  ...
+}</code></pre>
+        </li>
+        <li><b><a href="/конфігурація/конфігурація.html#перезапуск-nginx">Перезапустити NGINX.</a></b></li>
+        <li><b>Перевірити роботи SSL-сертифікату:</b> наприклад, за допомогою <a href="https://www.ssllabs.com/ssltest/">SSL Labs</a>.</li>
+      </ol>
+
+      <div id="footernav"></div>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
+    <script src="/js/includehtml.js"></script>
+    <script src="/js/prism.js"></script>
+    
+  </body>
+</html>

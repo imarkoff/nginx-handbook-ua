@@ -1,0 +1,757 @@
+<!doctype html>
+<html lang="uk">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Установка та налаштування</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📥</text></svg>">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.0/font/bootstrap-icons.css">
+    <link href="/css/prism.css" rel="stylesheet">
+  </head>
+  <body class="bg-light">
+
+    <header id="navbar"></header>
+    
+    <aside id="sidebar"></aside>
+
+    <main class="container ms-210">
+      <div class="emoji">📥</div>
+      <h1>Установка та налаштування</h1>
+      <hr>
+
+      <h2 class="install">⬇ Встановлення готового пакунка</h2>
+      <p>Встановлення NGINX з відкритим вихідним кодом з пакунка набагато простіше і швидше, ніж збірка з коду, але збірка з коду дозволяє вам компілювати нестандартні модулі. Готові пакунки доступні для більшості популярних дистрибутивів Linux.</p>
+      
+      <div class="accordion" id="accordionDistros">
+        <div class="accordion-item">
+          <h3 class="accordion-header" id="headingDebian">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseDebian" aria-expanded="false" aria-controls="collapseDebian">
+              Debian, Ubuntu
+            </button>
+          </h3>
+          <div id="collapseDebian" class="accordion-collapse collapse" aria-labelledby="headingDebian" data-bs-parent="#accordionDistros">
+            <div class="accordion-body">
+              <ol>
+                <li>
+                  Оновіть пакети:
+                  <pre><code class="language-bash">sudo apt update && sudo apt upgrade</code></pre>
+                </li>
+                <li>
+                  Встановіть NGINX:
+                  <pre><code class="language-bash">sudo apt install nginx</code></pre>
+                </li>
+              </ol>
+            </div>
+          </div>
+        </div>
+
+        <div class="accordion-item">
+          <h3 class="accordion-header" id="headingRHEL">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseRHEL" aria-expanded="false" aria-controls="collapseRHEL">
+              RHEL, CentOS, Oracle Linux, AlmaLinux, Rocky Linux
+            </button>
+          </h3>
+          <div id="collapseRHEL" class="accordion-collapse collapse" aria-labelledby="headingRHEL" data-bs-parent="#accordionDistros">
+            <div class="accordion-body">
+              <ol>
+                <li>
+                  Встановіть EPEL:
+                  <pre><code class="language-bash">sudo yum install epel-release</code></pre>
+                </li>
+                <li>
+                  Оновіть індекси пакетів системи:
+                  <pre><code class="language-bash">sudo yum update</code></pre>
+                  </li>
+                <li>
+                  Встановіть NGINX:
+                  <pre><code class="language-bash">sudo yum install nginx</code></pre>
+                  </li>
+              </ol>
+            </div>
+          </div>
+        </div>
+        
+        <div class="accordion-item">
+          <h3 class="accordion-header" id="headingArch">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseArch" aria-expanded="false" aria-controls="collapseArch">
+              Arch Linux
+            </button>
+          </h3>
+          <div id="collapseArch" class="accordion-collapse collapse" aria-labelledby="headingArch" data-bs-parent="#accordionDistros">
+            <div class="accordion-body">
+              <ol>
+                <li>
+                  Оновіть бази даних пакетів:
+                  <pre><code class="language-bash">sudo pacman -Syy</code></pre>
+                </li>
+                <li>
+                  Встановіть NGINX:
+                  <pre><code class="language-bash">sudo pacman -S nginx</code></pre>
+                </li>
+              </ol>
+            </div>
+          </div>
+        </div>
+
+        <div class="accordion-item">
+          <h3 class="accordion-header" id="headingSUSE">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSUSE" aria-expanded="false" aria-controls="collapseSUSE">
+              SUSE Linux
+            </button>
+          </h3>
+          <div id="collapseSUSE" class="accordion-collapse collapse" aria-labelledby="headingSUSE" data-bs-parent="#accordionDistros">
+            <div class="accordion-body">
+              <ol>
+                <li>
+                  Встановіть prerequesties:
+                  <pre><code class="language-bash">sudo zypper install curl ca-certificates gpg2</code></pre>
+                </li>
+                <li>
+                  Налаштуйте репозиторій zypper для стабільних пакунків NGINX:
+                  <pre><code class="language-bash">sudo zypper addrepo --gpgcheck --type yum --refresh --check \
+'[http://nginx.org/packages/sles/$releasever_major](http://nginx.org/packages/sles/$releasever_major)' nginx-stable</code></pre>
+                </li>
+                <li>
+                  Якщо хочете використовувати основні пакунки NGINX, виконайте замість цього:
+                  <pre><code class="language-bash">sudo zypper addrepo --gpgcheck --type yum --refresh --check \
+'http://nginx.org/packages/mainline/sles/$releasever_major' nginx-mainline</code></pre>
+                </li>
+                <li>
+                  Імпортуйте офіційний ключ підпису NGINX, щоб <code><span class="gray">zypper/rpm</span></code> міг перевірити справжність пакунків. Отримайте ключ:
+                  <pre><code class="language-bash">curl -o /tmp/nginx_signing.key https://nginx.org/keys/nginx_signing.key</code></pre>
+                </li>
+                <li>
+                  Переконайтеся, що завантажений файл містить правильний ключ:
+                  <pre><code class="language-bash">gpg --with-fingerprint /tmp/nginx_signing.key</code></pre>
+                  На виході має бути повний відбиток <code><span class="gray">573B FD6B 3D8F BC64 1079 A6AB ABF5 BD82 7BD9 BF62</span></code>, як показано нижче:
+                  <pre><code class="lang-bash">pub 2048R/7BD9BF62 2011-08-19 [expires: 2024-06-14].
+Key fingerprint = 573B FD6B 3D8F BC64 1079 A6AB ABF5 BD82 7BD9 BF62
+uid nginx signing key &lt;signing-key@nginx.com&gt;</code></pre>
+                </li>
+                <li>
+                  Імпортуйте ключ до бази даних <code><span class="gray">rpm</span></code>:
+                  <pre><code class="lang-bash">sudo rpmkeys --import /tmp/nginx_signing.key</code></pre>
+                </li>
+                <li>
+                  Встановіть NGINX:
+                  <pre><code class="lang-bash">sudo zypper install nginx</code></pre>
+                </li>
+              </ol>
+            </div>
+          </div>
+        </div>
+
+        <div class="accordion-item">
+          <h3 class="accordion-header" id="headingAlpine">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseAlpine" aria-expanded="false" aria-controls="collapseAlpine">
+              Alpine Linux
+            </button>
+          </h3>
+          <div id="collapseAlpine" class="accordion-collapse collapse" aria-labelledby="headingAlpine" data-bs-parent="#accordionDistros">
+            <div class="accordion-body">
+              <ol>
+                <li>
+                  Встановіть prerequesties:
+                  <pre><code class="lang-bash">sudo apk add openssl curl ca-certificates</code></pre>
+                </li>
+                <li>
+                  Налаштуйте репозиторій <code><span class="gray">apk</span></code> для стабільних пакунків NGINX:
+                  <pre><code class="lang-bash">printf "%s%s%s\n" \
+"http://nginx.org/packages/alpine/v" \
+`egrep -o '^[0-9]+\.[0-9]+' /etc/alpine-release` \
+"/main" \
+| sudo tee -a /etc/apk/repositories</code></pre>
+                  Для основних пакунків NGINX:
+                  <pre><code class="lang-bash">printf "%s%s%s\n" \
+"http://nginx.org/packages/mainline/alpine/v" \
+`egrep -o '^[0-9]+\.[0-9]+' /etc/alpine-release` \
+"/main" \
+| sudo tee -a /etc/apk/repositories</code></pre>
+                </li>
+                <li>
+                  Імпортуйте офіційний ключ підпису NGINX, щоб <code><span class="gray">apk</span></code> міг перевірити автентичність пакунків. Отримайте ключ:
+                  <pre><code class="lang-bash">curl -o /tmp/nginx_signing.rsa.pub https://nginx.org/keys/nginx_signing.rsa.pub</code></pre>
+                </li>
+                <li>
+                  Переконайтеся, що завантажений файл містить правильний ключ:
+                  <pre><code class="lang-bash">openssl rsa -pubin -in /tmp/nginx_signing.rsa.pub -text -noout</code></pre>
+                  У вихідному файлі має бути виведено модуль:
+                  <pre><code class="lang-bash">Public-Key: (2048 bit)
+Modulus:
+    00:fe:14:f6:0a:1a:b8:86:19:fe:cd:ab:02:9f:58:
+    2f:37:70:15:74:d6:06:9b:81:55:90:99:96:cc:70:
+    5c:de:5b:e8:4c:b2:0c:47:5b:a8:a2:98:3d:11:b1:
+    f6:7d:a0:46:df:24:23:c6:d0:24:52:67:ba:69:ab:
+    9a:4a:6a:66:2c:db:e1:09:f1:0d:b2:b0:e1:47:1f:
+    0a:46:ac:0d:82:f3:3c:8d:02:ce:08:43:19:d9:64:
+    86:c4:4e:07:12:c0:5b:43:ba:7d:17:8a:a3:f0:3d:
+    98:32:b9:75:66:f4:f0:1b:2d:94:5b:7c:1c:e6:f3:
+    04:7f:dd:25:b2:82:a6:41:04:b7:50:93:94:c4:7c:
+    34:7e:12:7c:bf:33:54:55:47:8c:42:94:40:8e:34:
+    5f:54:04:1d:9e:8c:57:48:d4:b0:f8:e4:03:db:3f:
+    68:6c:37:fa:62:14:1c:94:d6:de:f2:2b:68:29:17:
+    24:6d:f7:b5:b3:18:79:fd:31:5e:7f:4c:be:c0:99:
+    13:cc:e2:97:2b:dc:96:9c:9a:d0:a7:c5:77:82:67:
+    c9:cb:a9:e7:68:4a:e1:c5:ba:1c:32:0e:79:40:6e:
+    ef:08:d7:a3:b9:5d:1a:df:ce:1a:c7:44:91:4c:d4:
+    99:c8:88:69:b3:66:2e:b3:06:f1:f4:22:d7:f2:5f:
+    ab:6d
+Exponent: 65537 (0x10001)</code></pre>
+                </li>
+                <li>
+                  Перенесіть ключ до сховища довірених ключів <code><span class="gray">apk</span></code>:
+                  <pre><code class="lang-bash">sudo mv /tmp/nginx_signing.rsa.pub /etc/apk/keys/</code></pre>
+                </li>
+                <li>
+                  Встановіть NGINX:
+                  <pre><code class="lang-bash">sudo apk add nginx</code></pre>
+                  Тег <code><span class="gray">@nginx</span></code> також слід вказувати при встановленні пакунків з динамічними модулями:
+                  <pre><code class="lang-bash">sudo apk add nginx-module-image-filter@nginx nginx-module-njs@nginx</code></pre>
+                </li>
+              </ol>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <hr>
+
+      <h2 id="make">📦 Компіляція та встановлення з коду</h2>
+      <p>Компіляція NGINX Open Source з вихідних текстів надає більше гнучкості, ніж готові пакунки: ви можете додавати певні модулі <span class="gray">(від NGINX або сторонніх розробників)</span>, а також застосовувати найновіші патчі безпеки.</p>
+    
+      <div class="accordion" id="accordionOpen">
+        <div class="accordion-item">
+          <h3 class="accordion-header" id="headingOne">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+              Встановлення залежностей NGINX
+            </button>
+          </h3>
+          <div id="collapseOne" class="accordion-collapse collapse" aria-labelledby="headingOne" data-bs-parent="#accordionOpen">
+            <div class="accordion-body">
+              <p>Перед компіляцією NGINX Open Source з вихідних текстів, необхідно встановити бібліотеки для його залежностей:</p>
+              <ul>
+                <li>
+                  <p><b>PRCE</b> - Підтримка регулярних виразів. Необхідний для модулів NGINX Core та Rewrite.</p>
+                  <pre><code class="lang-bash">wget github.com/PCRE2Project/pcre2/releases/download/pcre2-10.40/pcre2-10.40.tar.gz
+tar -zxf pcre2-10.40.tar.gz
+cd pcre2-10.40
+./configure
+make
+sudo make install</code></pre>
+                </li>
+                <li>
+                  <p><b>zlib</b> - Підтримує стиснення заголовків. Вимагається модулем NGINX Gzip</p>
+                  <pre><code class="lang-bash">wget  &lt;http://zlib.net/zlib-1.2.13.tar.gz&gt;
+tar -zxf zlib-1.2.13.tar.gz
+cd zlib-1.2.13
+./configure
+make
+sudo make install</code></pre>
+                </li>
+                <li>
+                  <p><b>OpenSSL</b> - підтримує протокол HTTPS. Вимагається модулем NGINX SSL та іншими.</p>
+                  <pre><code class="lang-bash">wget &lt;http://www.openssl.org/source/openssl-1.1.1p.tar.gz&gt;
+tar -zxf openssl-1.1.1p.tar.gz
+cd openssl-1.1.1p
+./Configure darwin64-x86_64-cc --prefix=/usr
+make
+sudo make install</code></pre>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div class="accordion-item">
+          <h3 class="accordion-header" id="headingTwo">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+              Завантаження вихідного коду
+            </button>
+          </h3>
+          <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#accordionOpen">
+            <div class="accordion-body">
+              <p>Завантаження і розпакування вихідного коду для останньої основної версії:</p>
+              <pre><code class="lang-bash">wget https://nginx.org/download/nginx-1.23.4.tar.gz
+tar zxf nginx-1.23.4.tar.gz
+cd nginx-1.23.4</code></pre>
+              
+              <p>Для останньої стабільної версії:</p>
+              <pre><code class="lang-bash">wget https://nginx.org/download/nginx-1.24.0.tar.gz
+tar zxf nginx-1.24.0.tar.gz
+cd nginx-1.24.0</code></pre>
+            </div>
+          </div>
+        </div>
+
+        <div class="accordion-item">
+          <h3 class="accordion-header" id="headingThree">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+              Налаштування параметрів збірки
+            </button>
+          </h3>
+          <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#accordionOpen">
+            <div class="accordion-body">
+              <p>Параметри конфігурації визначаються за допомогою скрипта <code>./configure</code>, який встановлює різні параметри NGINX, включаючи шляхи до вихідних і конфігураційних файлів, параметри компілятора, методи обробки з'єднань і список модулів. Скрипт завершується створенням Makefile, необхідного для компіляції коду і встановлення NGINX Open Source.</p>
+              <p>Приклад параметрів скрипта конфігурації (слід вводити в один рядок):</p>
+              <pre><code class="lang-bash">./configure
+--sbin-path=/usr/local/nginx/nginx
+--conf-path=/usr/local/nginx/nginx.conf
+--pid-path=/usr/local/nginx/nginx.pid
+--with-pcre=../pcre2-10.40
+--with-zlib=../zlib-1.2.13
+--with-http_ssl_module
+--with-stream
+--with-mail=dynamic
+--add-module=/usr/build/nginx-rtmp-module
+--add-dynamic-module=/usr/build/3party_module</code></pre>
+            </div>
+          </div>
+        </div>
+
+        <div class="accordion-item">
+          <h3 class="accordion-header" id="headingFour">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
+              Налаштування шляхів до NGINX
+            </button>
+          </h3>
+          <div id="collapseFour" class="accordion-collapse collapse" aria-labelledby="headingFour" data-bs-parent="#accordionOpen">
+            <div class="accordion-body">
+              <p>Скрипт <code>configure</code> дозволяє встановити шляхи до двійкових і конфігураційних файлів NGINX, а також до залежних бібліотек, таких як PCRE або SSL, щоб статично зв'язати їх з двійковим файлом NGINX.</p>
+              <table class="table table-bordered">
+                <tr>
+                  <th>Параметр</th>
+                  <th>Опис</th>
+                </tr>
+
+                <tr>
+                  <td><code>--prefix=&lt;PATH&gt;</code></td>
+                  <td>Каталог для файлів NGINX, а також базове розташування для всіх відносних шляхів, заданих іншими параметрами конфігураційного скрипта (за винятком шляхів до бібліотек) і для шляху до конфігураційного файлу <code>nginx.conf</code>. Значення за замовчуванням: <code>/usr/local/nginx</code>.</td>
+                </tr>
+                <tr>
+                  <td><code>--sbin-path=&lt;PATH&gt;</code></td>
+                  <td>Назва виконуваного файлу NGINX, який використовується лише під час встановлення. Значення за замовчуванням: <code>/sbin/nginx</code></td>
+                </tr>
+                <tr>
+                  <td><code>--conf-path=&lt;PATH&gt;</code></td>
+                  <td>Назва файлу конфігурації NGINX. Однак ви завжди можете замінити це значення під час запуску, вказавши інший файл за допомогою опції <code>-c &lt;FILENAME&gt;</code> у командному рядку NGINX. Значення за замовчуванням: <code>conf/nginx.conf</code></td>
+                </tr>
+                <tr>
+                  <td><code>--pid-path=&lt;PATH&gt;</code></td>
+                  <td>Ім'я файлу <code>nginx.pid</code>, в якому зберігається ідентифікатор процесу головного процесу NGINX. Після встановлення шляху до цього файлу можна змінити за допомогою директиви <code>pid</code> у конфігураційному файлі NGINX. За замовчуванням: <code>/logs/nginx.pid</code></td>
+                </tr>
+                <tr>
+                  <td><code>--error-log-path=&lt;PATH&gt;</code></td>
+                  <td>Назва основного файлу журналу для помилок, попереджень і діагностичних даних. Після встановлення назву файлу можна змінити за допомогою директиви <code>error_log</code> у файлі конфігурації NGINX. За замовчуванням: <code>/logs/error.log</code></td>
+                </tr>
+                <tr>
+                  <td><code>--http-log-path=&lt;PATH&gt;</code></td>
+                  <td>Ім'я основного лог-файлу для запитів до HTTP-сервера. Після встановлення ім'я файлу завжди можна змінити за допомогою директиви <code>access_log</code> у конфігураційному файлі NGINX. За замовчуванням: <code>/logs/access.log</code></td>
+                </tr>
+                <tr>
+                  <td><code>--user=&lt;NAME&gt;</code></td>
+                  <td>Ім'я непривілейованого користувача, облікові дані якого використовуються робочими процесами NGINX. Після встановлення ім'я можна змінити за допомогою директиви <code>user</code> у файлі конфігурації NGINX. За замовчуванням: <code>nobody</code></td>
+                </tr>
+                <tr>
+                  <td><code>--group=&lt;NAME&gt;</code></td>
+                  <td>Назва групи, облікові дані якої використовуються робочими процесами NGINX. Після встановлення назву можна змінити за допомогою директиви user у конфігураційному файлі NGINX. За замовчуванням: значення, задане директивою <code>--user</code>.</td>
+                </tr>
+                <tr>
+                  <td><code>--with-pcre=&lt;PATH&gt;</code></td>
+                  <td>Шлях до коду бібліотеки PCRE, яка потрібна для підтримки регулярних виразів у директиві location та модулі Rewrite.</td>
+                </tr>
+                <tr>
+                  <td><code>--with-pcre-jit</code></td>
+                  <td>Збирає бібліотеку PCRE з підтримкою компіляції <code>just-in-time</code> (директива <code>pcre_jit</code>).</td>
+                </tr>
+                <tr>
+                  <td><code>--with-zlib=&lt;PATH&gt;</code></td>
+                  <td>Шлях до коду бібліотеки <code>zlib</code>, яку вимагає модуль Gzip.</td>
+                </tr>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <div class="accordion-item">
+          <h3 class="accordion-header" id="headingFive">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFive" aria-expanded="false" aria-controls="collapseFive">
+              Налаштування параметрів NGINX GCC
+            </button>
+          </h3>
+          <div id="collapseFive" class="accordion-collapse collapse" aria-labelledby="headingFive" data-bs-parent="#accordionOpen">
+            <div class="accordion-body">
+              <p>За допомогою скрипта <code>configure</code> також можна вказати параметри, пов'язані з компілятором.</p>
+              <table class="table table-bordered">
+                <tr>
+                  <th>Параметр</th>
+                  <th>Опис</th>
+                </tr>
+
+                <tr>
+                  <td><code>--with-cc-opt="&lt;PARAMETERS&gt;"</code></td>
+                  <td>Додаткові параметри, які додаються до змінної <code>CFLAGS</code>. При використанні системної бібліотеки PCRE у FreeBSD обов'язковим значенням є <code>--with-cc-opt="-I /usr/local/include"</code>. Якщо потрібно збільшити кількість файлів, що підтримуються <code>select()</code>, це також можна вказати тут, як у цьому прикладі: <code>--with-cc-opt="-D FD_SETSIZE=2048"</code>.</td>
+                </tr>
+                <tr>
+                  <td><code>--with-ld-opt="&lt;PARAMETERS&gt;"</code></td>
+                  <td>Додаткові параметри, які використовуються під час лінкування. При використанні системної бібліотеки PCRE під FreeBSD обов'язковим значенням є <code>--with-ld-opt="-L /usr/local/lib"</code>.</td>
+                </tr>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <div class="accordion-item">
+          <h3 class="accordion-header" id="headingSix">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSix" aria-expanded="false" aria-controls="collapseSix">
+              Вказівка методів обробки з'єднань NGINX
+            </button>
+          </h3>
+          <div id="collapseSix" class="accordion-collapse collapse" aria-labelledby="headingSix" data-bs-parent="#accordionOpen">
+            <div class="accordion-body">
+              <p>За допомогою скрипта <code>configure</code> можна перевизначити метод опитування на основі подій.</p>
+              <table class="table table-bordered">
+                <tr>
+                  <th>Назва модуля</th>
+                  <th>Опис</th>
+                </tr>
+                
+                <tr>
+                  <td><code>--with-select_module</code>, <code>--without-select_module</code></td>
+                  <td>Дозволяє або забороняє <b>створення</b> модуля, який дозволяє NGINX працювати з методом <code>select()</code>. Модуль буде створено автоматично, якщо платформа не підтримує відповідні методи, такі як <code>kqueue</code>, <code>epoll</code> або <code>/dev/poll</code>.</td>
+                </tr>
+                <tr>
+                  <td><code>--with-poll_module</code>, <code>--without-poll_module</code></td>
+                  <td>Дозволяє або забороняє <b>збірку</b> модуля, який дозволяє NGINX працювати з методом <code>poll()</code>. Модуль буде зібрано автоматично, якщо виявиться, що платформа не підтримує відповідні методи, такі як <code>kqueue</code>, <code>epoll</code> або <code>/dev/poll</code>.</td>
+                </tr>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <div class="accordion-item">
+          <h3 class="accordion-header" id="headingSeven">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSeven" aria-expanded="false" aria-controls="collapseSeven">
+              Вибір модулів NGINX для збірки
+            </button>
+          </h3>
+          <div id="collapseSeven" class="accordion-collapse collapse" aria-labelledby="headingSeven" data-bs-parent="#accordionOpen">
+            <div class="accordion-body">
+              <p>NGINX складається з набору функціонально-специфічних модулів, які вказуються за допомогою скрипта <code>configure</code> разом з іншими параметрами збірки.</p>
+              <p>Деякі модулі збираються за замовчуванням - їх не потрібно вказувати у скрипті <code>configure</code>. Однак, модулі за замовчуванням можна явно виключити з двійкового файла NGINX за допомогою опції <code>--without-&lt;MODULE-NAME&gt;</code> у скрипті <code>configure</code>.</p>
+              <p>Модулі, не включені за замовчуванням, а також модулі сторонніх розробників мають бути явно вказані у скрипті <code>configure</code> разом з іншими параметрами збірки. Такі модулі можуть бути зв'язані з бінарним файлом NGINX статично <span class="gray">(тоді вони завантажуються при кожному запуску NGINX)</span> або динамічно <span class="gray">(вони завантажуються тільки якщо відповідні директиви включено до конфігураційного файлу NGINX)</span>.</p>
+            
+              <h4>Модулі, що збираються за замовчуванням</h4>
+              <p>Можна вимкнути модуль, який збирається за замовчуванням, назвавши його за допомогою опції <code>--without-&lt;MODULE-NAME&gt;</code> у скрипті конфігурації, як у цьому прикладі, який вимикає модуль Empty GIF:</p>
+              <pre><code class="lang-bash">./configure
+--sbin-path=/usr/local/nginx/nginx
+--conf-path=/usr/local/nginx/nginx.conf
+--pid-path=/usr/local/nginx/nginx.pid
+--with-http_ssl_module
+--with-stream
+--with-pcre=../pcre2-10.40
+--with-zlib=../zlib-1.2.13
+--without-http_empty_gif_module</code></pre>
+              <table class="table table-bordered">
+                <tr>
+                  <th>Назва модуля</th>
+                  <th>Опис</th>
+                </tr>
+                
+                <tr>
+                  <td><code>http_access_module</code></td>
+                  <td>Приймає або відхиляє запити з вказаних клієнтських адрес.</td>
+                </tr>
+                <tr>
+                  <td><code>http_auth_basic_module</code></td>
+                  <td>Обмежує доступ до ресурсів шляхом перевірки імені користувача та пароля за допомогою протоколу HTTP Basic Authentication.</td>
+                </tr>
+                <tr>
+                  <td><code>http_autoindex_module</code></td>
+                  <td>Обробляє запити, що закінчуються символом прямої косої риски <code>/</code>, і видає список каталогів.</td>
+                </tr>
+                <tr>
+                  <td><code>http_browser_module</code></td>
+                  <td>Створює змінні, значення яких залежать від значення заголовка запиту <code>User-Agent</code>.</td>
+                </tr>
+                <tr>
+                  <td><code>http_charset_module</code></td>
+                  <td>Додає вказаний набір символів до заголовка <code>Content-Type</code> відповіді. Може конвертувати дані з одного набору символів в інший.</td>
+                </tr>
+                <tr>
+                  <td><code>http_empty_gif_module</code></td>
+                  <td>Видає однопіксельний прозорий GIF.</td>
+                </tr>
+                <tr>
+                  <td><code>http_fastcgi_module</code></td>
+                  <td>Передає запити до сервера FastCGI.</td>
+                </tr>
+                <tr>
+                  <td><code>http_geo_module</code></td>
+                  <td>Створює змінні зі значеннями, що залежать від IP-адреси клієнта.</td>
+                </tr>
+                <tr>
+                  <td><code>http_gzip_module</code></td>
+                  <td>Стискає відповіді за допомогою <code>gzip</code>, зменшуючи обсяг переданих даних вдвічі або більше.</td>
+                </tr>
+                <tr>
+                  <td><code>http_limit_conn_module</code></td>
+                  <td>Обмежує кількість з'єднань за певним ключем, зокрема, кількість з'єднань з однієї IP-адреси.</td>
+                </tr>
+                <tr>
+                  <td><code>http_limit_req_module</code></td>
+                  <td>Обмежує швидкість обробки запитів за певним ключем, зокрема, швидкість обробки запитів, що надходять з однієї IP-адреси.</td>
+                </tr>
+                <tr>
+                  <td><code>http_map_module</code></td>
+                  <td>Створює змінні, значення яких залежать від значень інших змінних.</td>
+                </tr>
+                <tr>
+                  <td><code>http_memcached_module</code></td>
+                  <td>Передає запити на кешований сервер.</td>
+                </tr>
+                <tr>
+                  <td><code>http_proxy_module</code></td>
+                  <td>Передає HTTP-запити на інший сервер.</td>
+                </tr>
+                <tr>
+                  <td><code>http_referer_module</code></td>
+                  <td>Блокує запити з невірними значеннями в заголовку <code>Referer</code>.</td>
+                </tr>
+                <tr>
+                  <td><code>http_rewrite_module</code></td>
+                  <td>Змінює URI запиту за допомогою регулярних виразів і повертає перенаправлення; умовно вибирає конфігурації. Потрібна бібліотека <code>PCRE</code>.</td>
+                </tr>
+                <tr>
+                  <td><code>http_scgi_module</code></td>
+                  <td>Передає запити на SCGI-сервер.</td>
+                </tr>
+                <tr>
+                  <td><code>http_ssi_module</code></td>
+                  <td>Обробляє команди SSI <span class="gray">(Server Side Includes)</span> у відповідях, що проходять через нього.</td>
+                </tr>
+                <tr>
+                  <td><code>http_split_clients_module</code></td>
+                  <td>Створює змінні, придатні для A/B <span class="gray">(спліт)</span> тестування.</td>
+                </tr>
+                <tr>
+                  <td><code>http_upstream_hash_module</code></td>
+                  <td>Вмикає загальний метод балансування навантаження <code>Hash</code>.</td>
+                </tr>
+                <tr>
+                  <td><code>http_upstream_ip_hash_module</code></td>
+                  <td>Вмикає метод балансування навантаження <code>IP Hash</code>.</td>
+                </tr>
+                <tr>
+                  <td><code>http_upstream_keepalive_module</code></td>
+                  <td>Вмикає постійні з'єднання.</td>
+                </tr>
+                <tr>
+                  <td><code>http_upstream_least_conn_module</code></td>
+                  <td>Вмикає метод балансування навантаження <code>Least Connections</code>.</td>
+                </tr>
+                <tr>
+                  <td><code>http_upstream_zone_module</code></td>
+                  <td>Вмикає зони спільної пам'яті.</td>
+                </tr>
+                <tr>
+                  <td><code>http_userid_module</code></td>
+                  <td>Встановлює файли cookie для ідентифікації клієнта.</td>
+                </tr>
+                <tr>
+                  <td><code>http_uwsgi_module</code></td>
+                  <td>Передає запити на сервер <code>uwsgi</code>.</td>
+                </tr>
+              </table>
+              
+              <h4>Включення модулів, які не збираються за замовчуванням</h4>
+              <p>Багато модулів NGINX не збираються за замовчуванням, і їх потрібно вказати у командному рядку configure, щоб їх було зібрано.</p>
+              <p>Модулі <code>mail</code>, <code>stream</code>, <code>geoip</code>, <code>image_filter</code>, <code>perl</code> і <code>xslt</code> можна скомпілювати як динамічні. Докладні відомості наведено трохи нижче.</p>
+              <p>Приклад команди <code>configure</code>, яка включає нетипові модулі:</p>
+              <pre><code class="lang-bash">./configure
+--sbin-path=/usr/local/nginx/nginx
+--conf-path=/usr/local/nginx/nginx.conf
+--pid-path=/usr/local/nginx/nginx.pid
+--with-pcre=../pcre2-10.40
+--with-zlib=../zlib-1.2.13
+--with-http_ssl_module
+--with-stream
+--with-mail</code></pre>
+                <table class="table table-bordered">
+                  <tr>
+                    <th>Назва модуля</th>
+                    <th>Опис</th>
+                  </tr>
+                  
+                  <tr>
+                    <td><code>—with-cpp_test_module</code></td>
+                    <td>Тестує C++ сумісність заголовних файлів.</td>
+                  </tr>
+                  <tr>
+                    <td><code>--with-debug</code></td>
+                    <td>Вмикає журнал налагодження.</td>
+                  </tr>
+                  <tr>
+                    <td><code>--with-file-aio</code></td>
+                    <td>Вмикає асинхронний ввід/вивід. Дозволяє використовувати бібліотеку інструментів Google Performance.</td>
+                  </tr>
+                  <tr>
+                    <td><code>--with-http_addition_module</code></td>
+                    <td>Додає текст до і після відповіді.</td>
+                  </tr>
+                  <tr>
+                    <td><code>--with-http_auth_request_module</code></td>
+                    <td>Реалізує авторизацію клієнта на основі результату підзапиту.</td>
+                  </tr>
+                  <tr>
+                    <td><code>--with-http_dav_module</code></td>
+                    <td>Вмикає автоматизацію керування файлами за допомогою протоколу WebDAV.</td>
+                  </tr>
+                  <tr>
+                    <td><code>--with-http_flv_module</code></td>
+                    <td>Забезпечує псевдопотокову серверну підтримку файлів Flash Video (FLV).</td>
+                  </tr>
+                  <tr>
+                    <td><code>--with-http_geoip_module</code></td>
+                    <td>Дозволяє створювати змінні, значення яких залежать від IP-адреси клієнта. Модуль використовує бази даних MaxMind GeoIP. Для компіляції як окремого динамічного модуля потрібно змінити параметр на <code>--with-http_geoip_module=dynamic</code>.</td>
+                  </tr>
+                  <tr>
+                    <td><code>--with-http_gunzip_module</code></td>
+                    <td>Розпаковує відповіді з <code>Content-Encoding: gzip</code> для клієнтів, які не підтримують метод кодування <code>zip</code>.</td>
+                  </tr>
+                  <tr>
+                    <td><code>--with-http_gzip_static_module</code></td>
+                    <td>Дозволяє надсилати попередньо стиснуті файли з розширенням <code>.gz</code> замість звичайних файлів.</td>
+                  </tr>
+                  <tr>
+                    <td><code>--with-http_image_filter_module</code></td>
+                    <td>Перетворює зображення у форматах JPEG, GIF та PNG. Для роботи модуля потрібна бібліотека <code>LibGD</code>. Для компіляції як окремого динамічного модуля потрібно змінити параметр на <code>--with-http_image_filter_module=dynamic</code>.</td>
+                  </tr>
+                  <tr>
+                    <td><code>--with-http_mp4_module</code></td>
+                    <td>Надає псевдопотокову серверну підтримку для файлів MP4.</td>
+                  </tr>
+                  <tr>
+                    <td><code>--with-http_perl_module</code></td>
+                    <td>Використовується для реалізації обробників місцезнаходження і змінних на Perl і вставки викликів Perl в SSI. Вимагає наявності бібліотеки <code>PERL</code>. Для компіляції як окремого динамічного модуля потрібно змінити параметр на <code>--with-http_perl_module=dynamic</code>.</td>
+                  </tr>
+                  <tr>
+                    <td><code>--with-http_perl_module=dynamic</code></td>
+                    <td>Обробляє запити, що закінчуються символом косої риски <code>/</code>, і вибирає випадковий файл у каталозі як індексний файл.</td>
+                  </tr>
+                  <tr>
+                    <td><code>--with-http_realip_module</code></td>
+                    <td>Змінює адресу клієнта на ту, яку було надіслано у вказаному полі заголовка.</td>
+                  </tr>
+                  <tr>
+                    <td><code>--with-http_secure_link_module</code></td>
+                    <td>Використовується для перевірки автентичності запитуваних посилань, захисту ресурсів від несанкціонованого доступу та обмеження часу життя посилання.</td>
+                  </tr>
+                  <tr>
+                    <td><code>--with-http_slice_module</code></td>
+                    <td>Дозволяє розбивати запит на підзапити, кожен з яких повертає певний діапазон відповідей. Забезпечує більш ефективне кешування великих файлів.</td>
+                  </tr>
+                  <tr>
+                    <td><code>--with-http_ssl_module</code></td>
+                    <td>Вмикає підтримку HTTPS. Потрібна бібліотека <code>SSL</code> <span class="gray">(напр. <code><span class="gray">OpenSSL</span></code>)</span>.</td>
+                  </tr>
+                  <tr>
+                    <td><code>OpenSSL</code></td>
+                    <td>Надає доступ до базової інформації про стан</td>
+                  </tr>
+                  <tr>
+                    <td><code>--with-http_sub_module</code></td>
+                    <td>Змінює відповідь, замінюючи один вказаний рядок іншим.</td>
+                  </tr>
+                  <tr>
+                    <td><code>--with-http_xslt_module</code></td>
+                    <td>Перетворює XML-відповіді за допомогою однієї або декількох таблиць стилів XSLT. Для роботи модуля потрібні бібліотеки <code>Libxml2</code> і <code>XSLT</code>. Для компіляції як окремого динамічного модуля потрібно змінити параметр на <code>--with-http_xslt_module=dynamic</code>.</td>
+                  </tr>
+                  <tr>
+                    <td><code>--with-http_v2_module</code></td>
+                    <td>Вмикає підтримку HTTP/2.</td>
+                  </tr>
+                  <tr>
+                    <td><code>--with-mail</code></td>
+                    <td>Вмикає функціональність поштового проксі. Для компіляції як окремого динамічного модуля потрібно змінити цей параметр на <code>--with-mail=dynamic</code>.</td>
+                  </tr>
+                  <tr>
+                    <td><code>--with-mail_ssl_module</code></td>
+                    <td>Надає підтримку поштовому проксі-серверу для роботи з протоколом SSL/TLS. Потрібна бібліотека <code>SSL</code> <span class="gray">(напр. <code><span class="gray">OpenSSL</span></code>)</span>.</td>
+                  </tr>
+                  <tr>
+                    <td><code>--with-stream</code></td>
+                    <td>Вмикає функціональність TCP і UDP проксі. Для компіляції як окремого динамічного модуля потрібно змінити параметр на <code>--with-stream=dynamic</code>.</td>
+                  </tr>
+                  <tr>
+                    <td><code>--with-stream_ssl_module</code></td>
+                    <td>Надає підтримку потокового проксі-сервера для роботи з протоколом SSL/TLS. Потрібна бібліотека <code>SSL</code> <span class="gray">(напр. <code><span class="gray">OpenSSL</span></code>)</span>.</td>
+                  </tr>
+                  <tr>
+                    <td><code>--with-threads</code></td>
+                    <td>Дозволяє NGINX використовувати пули потоків. Докладнішу інформацію можна знайти <a href="https://www.nginx.com/blog/thread-pools-boost-performance-9x/" target="_blank">тут</a>.</td>
+                  </tr>
+                </table>
+
+                <h4>Динамічно зв'язані модулі</h4>
+                <p>Модулі NGINX також можуть бути скомпільовані як спільний об'єкт <span class="gray">(<code>.so</code>-файл)</span>, а потім динамічно завантажені у NGINX Open Source під час виконання. Це забезпечує більшу гнучкість, оскільки модуль можна завантажити або вивантажити у будь-який час, додавши або видаливши відповідну директиву <code>load_module</code> у конфігураційному файлі NGINX і перезавантаживши конфігурацію. Зауважте, що сам модуль має підтримувати динамічне компонування.</p>
+                <p>Щоб скомпілювати NGINX Open Source з динамічно завантаженим модулем стороннього виробника, додайте опцію <code>--add-dynamic-module=&lt;PATH&gt;</code> до команди <code>configure</code>, де <code>&lt;PATH&gt;</code> - це шлях до вихідного коду:</p>
+                <pre><code class="lang-bash">./configure ... --add-dynamic-module=&lt;PATH&gt;</code></pre>
+                <p>Отримані <code>.so</code> файли записуються в каталог <code>prefix/modules/</code>, де <code>prefix</code> - це каталог для серверних файлів <span class="gray">(наприклад <code><span class="gray">/usr/local/nginx/</span></code>)</span>.</p>
+                <p>Щоб завантажити динамічний модуль, потрібно додати директиву <code>load_module</code> до конфігурації NGINX після встановлення:</p>
+                <pre><code class="lang-nginx">load_module modules/ngx_mail_module.so;</code></pre>
+              </div>
+          </div>
+        </div>
+
+        <div class="accordion-item">
+          <h3 class="accordion-header" id="headingEight">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseEight" aria-expanded="false" aria-controls="collapseEight">
+              Завершення встановлення з коду
+            </button>
+          </h3>
+          <div id="collapseEight" class="accordion-collapse collapse" aria-labelledby="headingEight" data-bs-parent="#accordionOpen">
+            <div class="accordion-body">
+              <p>Для завершення встановлення з коду, потрібно скласти і встановити збірку:</p>
+              <pre><code class="lang-bash">make
+sudo make install</code></pre>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <hr>
+      <p>Після завершення встановлення NGINX має бути автоматично зареєстрованим і запущеним як служба <code>systemd</code>. Для перевірки потрібно виконати наступну команду:</p>
+      <pre><code class="lang-bash">sudo systemctl status nginx
+
+# ● nginx.service - A high performance web server and a reverse proxy server
+#      Loaded: loaded (/lib/systemd/system/nginx.service; enabled; vendor preset: enabled)
+#      Active: active (running)</code></pre>
+      <p>Якщо в статусі вказано, що служба не запущена <code><span class="gray">Active: inactive (dead)</span></code>, то можна запустити службу, виконавши цю команду:</p>
+      <pre><code class="lang-bash">sudo systemctl start nginx</code></pre>
+      <p>або</p>
+      <pre><code class="lang-bash">sudo nginx</code></pre>
+      <p>Для візуальної перевірки того, що все працює належним чином, можна відвідати сервер/віртуальну машину за допомогою вашого браузера, і побачити стандартну сторінку привітання NGINX:</p>
+      <img src="/введення/установка-та-налаштування/nginx-welcome.png" class="rounded mx-auto d-block" alt="Сторінка привітання NGINX">
+      
+      <hr>
+        
+      <i>
+        Джерела:
+        <ul>
+          <li><a href="https://docs.nginx.com/nginx/admin-guide/installing-nginx/installing-nginx-open-source/">Installing NGINX Open Source</a></li>
+          <li><a href="https://www.freecodecamp.org/news/the-nginx-handbook/">The NGINX Handbook – Learn NGINX for Beginners</a></li>
+        </ul>
+      </i>
+    
+      <div id="footernav"></div>
+    </main>
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
+    <script src="/js/includehtml.js"></script>
+    <script src="/js/prism.js"></script>
+    
+  </body>
+</html>
