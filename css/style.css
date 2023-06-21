@@ -6,7 +6,7 @@
     font-size: 75px;
 }
 
-a {
+a:not(.not-a) {
     color: green;
 }
 /* a:visited {
