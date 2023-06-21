@@ -1,11 +1,10 @@
+/* Пошук ключового виразу по сторінках */
+
 // Список шляхів до сторінок
-var pagePaths = [];
+let pagePaths = [];
 
-// Отримання елементу ul з ідентифікатором nav_accordion
-var navAccordion = document.getElementById('nav_accordion');
-
-// Перегляд кожного підпункту меню з класом nav-link
-var submenuItems = navAccordion.querySelectorAll('.submenu a.nav-link');
+// переглядає наявні посилання в сайдбарі (тільки ті, що в підменю), та додає їх у список 
+const submenuItems = document.querySelectorAll('#nav_accordion .submenu a.nav-link');
 submenuItems.forEach(function(submenuItem) {
   var pagePath = submenuItem.getAttribute('href');
   pagePaths.push(pagePath);
@@ -17,7 +16,8 @@ var pageLinks = [];
 // Функція для завантаження сторінки і пошуку ключового слова
 function searchKeywordInPage(pagePath) {
   return fetch(pagePath)
-    .then(function(response) {
+  .then(function(response) {
+      // чи вдалося отримати доступ до сторінки
       if (response.ok) {
         return response.text();
       }
@@ -25,10 +25,16 @@ function searchKeywordInPage(pagePath) {
     })
     .then(function(pageContent) {
       var parser = new DOMParser();
-      var doc = parser.parseFromString(pageContent, 'text/html');
-      var mainContent = doc.querySelector('main').textContent;
-      var icon = doc.querySelector('link[rel="icon"]');
+
+      var doc = parser.parseFromString(pageContent, 'text/html'); // парсить цілу сторінку
+
+      var mainContent = doc.querySelector('main').textContent; // обмежує пошук по блоку з потрібним вмістом
+      var icon = doc.querySelector('link[rel="icon"]'); // зберігає іконку сайту
+
+      // якщо ключовий вираз у сторінці знайдено (не дивлячись на регістр)
+      // .trim - прибирає лишні пропускі на початку та в кінці ключового виразу
       if (mainContent.toLowerCase().includes(inputValue.toLowerCase().trim())) {
+        // додати елемент в список заголовок, посилання, іконку (якщо вона існує), яке потім буде виводитись в пошуку
         pageLinks.push({ title: doc.title, link: pagePath, icon: icon ? icon.href : '' });
       }
     })
@@ -38,14 +44,14 @@ function searchKeywordInPage(pagePath) {
 }
 
 
-// Отримання посилання на форму, поле пошуку та меню сторінок
+// форма пошуку, поле пошуку та меню сторінок
 var searchForm = document.getElementById('search-form');
 var searchInput = document.getElementById('search-input');
 var searchMenu = document.getElementById('search-menu');
 
 
-var inputValue = ''; // Змінна для збереження введеного значення у полі пошуку
-var searchTimeout; // Змінна для збереження ідентифікатора таймера
+var inputValue = ''; // зберігає введене значення, що у полі пошуку
+var searchTimeout; // зберігає ідентифікатор таймера
 
 // Додавання обробника події до форми
 searchInput.addEventListener('input', function(event) {
@@ -55,8 +61,9 @@ searchInput.addEventListener('input', function(event) {
 
   inputValue = searchInput.value; // Оновити значення змінної inputValue
 
+  // якщо запит порожній
   if (!inputValue.trim()) {
-    // Якщо запит порожній, очистити список знайдених результатів та вийти з функції
+    // очистити список знайдених результатів та вийти з функції
     searchMenu.innerHTML = '';
     return;
   }
@@ -74,22 +81,28 @@ searchInput.addEventListener('input', function(event) {
         var searchMenu = document.getElementById('search-menu');
         searchMenu.innerHTML = ''; // Очистити попередні результати пошуку
         
+        // створити нови список
         var ul = document.createElement('ul');
         ul.classList.add('list-group');
 
+        // якщо ключове слово десь було знайдено
         if (pageLinks.length > 0) {
 
+          // створити блок з посиланням на сторінку
           pageLinks.forEach(function(result) {
             var li = document.createElement('li');
             li.classList.add('list-group-item', 'list-group-item-action');
 
+            // заголовок сторінки, та саме посиланя
             var link = document.createElement('a');
             link.textContent = result.title;
             link.href = result.link;
           
+            // іконка сторінки
             var icon = document.createElement('img');
             icon.src = result.icon;
           
+            // посилання 
             li.addEventListener('click', function() {
               window.location.href = result.link;
             });
@@ -100,9 +113,12 @@ searchInput.addEventListener('input', function(event) {
           });
           
         } else {
+          // створити єдиний елемент в списку, який вказує юзеру, що такого запиту ніде не знайдено
           var li = document.createElement('li');
+          
           li.classList.add('list-group-item', 'disabled');
           li.textContent = 'Нічого не знайдено.';
+
           ul.appendChild(li);
         }
 
@@ -111,13 +127,12 @@ searchInput.addEventListener('input', function(event) {
       .catch(function(error) {
         console.log('Помилка при завантаженні сторінок:', error);
       });
-  }, 200); // Запустити запит на пошук після паузи в 150 мілісекунд без введення
+  }, 200); // Запустити запит на пошук після паузи в 200 мілісекунд без введення (для уникнення повторення сторінок в пошуку)
 
   searchInput.value = inputValue; // Встановлення введеного значення у полі пошуку після оновлення списку
 });
 
 
-// Додавання обробника події до документу
 document.addEventListener('click', function(event) {
   // Перевірка, чи елемент, на який було натиснуто, знаходиться в межах меню або пошуку
   if (!searchForm.contains(event.target) && !searchMenu.contains(event.target)) {
